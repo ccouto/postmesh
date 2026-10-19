@@ -1,0 +1,39 @@
+{
+  "format": "gid-replacer-view",
+  "version": 1,
+  "show_deformation": true,
+  "auto_scale": true,
+  "show_edges": true,
+  "show_outline": true,
+  "show_undeformed": false,
+  "show_legend": true,
+  "show_caption": true,
+  "show_axes": true,
+  "show_toolbar": false,
+  "fixed_range": false,
+  "scale_factor": 19.30486787923225,
+  "range_min": 0.028649087995290756,
+  "range_max": 30.831912994384766,
+  "colormap": "Coolwarm",
+  "result": "DISP",
+  "component": "Magnitude",
+  "step": "10.8628",
+  "deform_with": "DISP",
+  "camera": [
+    [
+      11442.384986388755,
+      -3910.4436801831544,
+      5990.4760504942005
+    ],
+    [
+      3381.1760230231225,
+      1358.0944342801213,
+      -615.035875799635
+    ],
+    [
+      -0.4355796036888825,
+      0.365107755260127,
+      0.82277988301802
+    ]
+  ]
+}
