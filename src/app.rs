@@ -231,14 +231,22 @@ impl App {
         }
     }
 
+    /// File dialog that starts in the folder the process was launched from.
+    fn dialog() -> rfd::FileDialog {
+        match std::env::current_dir() {
+            Ok(d) => rfd::FileDialog::new().set_directory(d),
+            Err(_) => rfd::FileDialog::new(),
+        }
+    }
+
     fn open_dialog(&mut self) {
-        if let Some(p) = rfd::FileDialog::new().add_filter("GiD / CalculiX results", &["msh", "res", "frd"]).pick_file() {
+        if let Some(p) = Self::dialog().add_filter("GiD / CalculiX results", &["msh", "res", "frd"]).pick_file() {
             self.open(&p);
         }
     }
 
     fn export_view(&mut self) {
-        if let Some(p) = rfd::FileDialog::new().set_file_name(format!("{}.json", self.model_stem())).add_filter("View options", &["json"]).save_file() {
+        if let Some(p) = Self::dialog().set_file_name(format!("{}.json", self.model_stem())).add_filter("View options", &["json"]).save_file() {
             match self.session.snapshot().save(&p) {
                 Ok(()) => self.status = format!("Saved view options to {}", p.display()),
                 Err(e) => self.error = Some(format!("{e:#}")),
@@ -247,7 +255,7 @@ impl App {
     }
 
     fn import_view(&mut self) {
-        if let Some(p) = rfd::FileDialog::new().add_filter("View options", &["json"]).pick_file() {
+        if let Some(p) = Self::dialog().add_filter("View options", &["json"]).pick_file() {
             match ViewOptions::load(&p) {
                 Ok(v) => {
                     self.session.apply_view(v, &mut self.renderer);
@@ -270,7 +278,7 @@ impl App {
     fn do_export(&mut self, d: &ExportDialog) {
         let (ext, _) = EXPORT_FORMATS[d.format_idx];
         let stem = self.model_stem();
-        let mut dlg = rfd::FileDialog::new().set_file_name(format!("{stem}.{ext}")).add_filter(ext.to_uppercase(), &[ext]);
+        let mut dlg = Self::dialog().set_file_name(format!("{stem}.{ext}")).add_filter(ext.to_uppercase(), &[ext]);
         if !self.prefs.export_dir.is_empty() && Path::new(&self.prefs.export_dir).is_dir() {
             dlg = dlg.set_directory(&self.prefs.export_dir);
         }
